@@ -13,7 +13,7 @@ import com.devtides.dogs.util.getProgressDrawable
 import com.devtides.dogs.util.loadImage
 import kotlinx.android.synthetic.main.item_dog.view.*
 
-class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<DogsListAdapter.DogViewHolder>() {
+class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<DogsListAdapter.DogViewHolder>(), DogClickListener {
 
     fun updateDogList(newDogsLList: List<DogBreed>) {
         dogsList.clear()
@@ -40,6 +40,9 @@ class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<
 //        holder.view.imageView.loadImage(dogsList[position].imageUrl, getProgressDrawable(holder.view.imageView.context))
     }
 
+    override fun onDogClicked(v: View) {
+
+    }
 
     class DogViewHolder(var view: ItemDogBinding) : RecyclerView.ViewHolder(view.root)
 }

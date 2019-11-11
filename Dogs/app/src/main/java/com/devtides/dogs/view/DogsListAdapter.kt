@@ -41,7 +41,6 @@ class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<
     }
 
     override fun onDogClicked(v: View) {
-
     }
 
     class DogViewHolder(var view: ItemDogBinding) : RecyclerView.ViewHolder(view.root)

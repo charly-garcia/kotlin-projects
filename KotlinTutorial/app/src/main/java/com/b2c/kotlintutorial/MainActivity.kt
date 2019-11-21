@@ -24,7 +24,9 @@ class MainActivity : AppCompatActivity() {
         tim.getLoot(Loot("Invisibility Potion", LootType.POTION, 35.95))
         tim.showInventory()
 
-
+        if (tim.dropLoot(redPotion)) {
+            tim.showInventory()
+        }
 
         Log.i("MainActivity", "$tim")
     }

@@ -10,7 +10,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val tim = Player("Tim")
+        //val enemy = Enemy
+
+        val uglyTroll = Troll("Ugly Troll", 27, 1)
+        println(uglyTroll)
+        uglyTroll.takeDamage(8)
+        println(uglyTroll)
+
+        val vlad = Vampyre("Vlad")
+        println(vlad)
+        vlad.takeDamage(8)
+        println(vlad)
+
+        /*val tim = Player("Tim")
 
         tim.weapon = Weapon("Spear", 14)
 
@@ -28,6 +40,8 @@ class MainActivity : AppCompatActivity() {
             tim.showInventory()
         }
 
-        Log.i("MainActivity", "$tim")
+        Log.i("MainActivity", "$tim")*/
+
+
     }
 }

@@ -11,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.androidsample.databinding.ActivityMainBinding
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.kotlin.toObservable
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val myCoroutineScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,13 +45,18 @@ class MainActivity : AppCompatActivity() {
                 binding.textView.text = "No Value"
             }
 
-            var list: List<Any> = listOf("One", 2, "Three", "Four", 4.5, "Five", 6.0f)
+            /*var list: List<Any> = listOf("One", 2, "Three", "Four", 4.5, "Five", 6.0f)
             list.toObservable()
                 .subscribeBy(  // named arguments for lambda Subscribers
                     onNext = { println(it) },
                     onError = { it.printStackTrace() },
                     onComplete = { println("Done2!") }
-                )
+                )*/
+
+            myCoroutineScope.launch(Dispatchers.Main) {
+                binding.textView.text = performSlowTask().await()
+            }
+
         }
 
         //var list: List<Any> = listOf("One", 2, "Three", "Four", 4.5, "Five", 6.0f) // 1
@@ -81,5 +88,19 @@ class MainActivity : AppCompatActivity() {
             binding.textView.text = getString(R.string.no_value_string)
         }
 
+    }
+
+    /*suspend fun performSlowTask() {
+        Log.i("SlowTask", "performSlowTask before")
+        delay(5_000)
+        Log.i("SlowTask", "performSlowTask after")
+    }*/
+
+    suspend fun performSlowTask() : Deferred<String> =
+        myCoroutineScope.async(Dispatchers.Default) {
+            Log.i("SlowTask", "performSlowTask before")
+            delay(5_000)
+            Log.i("SlowTask", "performSlowTask after")
+        return@async "Finished"
     }
 }

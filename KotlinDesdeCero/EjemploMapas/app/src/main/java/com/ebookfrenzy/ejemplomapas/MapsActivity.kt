@@ -16,10 +16,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.ebookfrenzy.ejemplomapas.databinding.ActivityMapsBinding
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnSuccessListener
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -31,6 +28,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val permisoCoarseLocation = Manifest.permission.ACCESS_COARSE_LOCATION
     private val CODIGO_SOLICITUD_PERMISO = 100
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    var locationRequest: LocationRequest? = null
+    private lateinit var locationCallback: LocationCallback
+    val ZOOM_LEVEL = 15f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +44,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        inicializarLocationRequest()
+    }
+
+    private fun inicializarLocationRequest() {
+        locationRequest = LocationRequest.create()?.apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
     }
 
     /**
@@ -57,7 +68,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
 
 
         if(validarPermisoUbicacion()) {
@@ -82,7 +92,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     private fun obtenerUbicacion() {
-        fusedLocationClient.lastLocation.addOnSuccessListener(this, object: OnSuccessListener<Location> {
+        /*fusedLocationClient.lastLocation.addOnSuccessListener(this, object: OnSuccessListener<Location> {
 
             override fun onSuccess(location: Location?) {
                 if (location != null) {
@@ -95,20 +105,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
 
-        })
+        })*/
+        mMap.isMyLocationEnabled = true
+        mMap.uiSettings.isMyLocationButtonEnabled = true
 
-        /*callback = object: LocationCallback() {
+        locationCallback = object: LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 super.onLocationResult(locationResult)
 
-                for (ubicacion in locationResult?.locations!!) {
-                    Toast.makeText(applicationContext, ubicacion.latitude.toString() + " , " +
-                            ubicacion.longitude.toString(), Toast.LENGTH_LONG).show()
+                for (location in locationResult?.locations!!) {
+                    Toast.makeText(applicationContext, location.latitude.toString() + " , " +
+                            location.longitude.toString(), Toast.LENGTH_LONG).show()
+
+                    val here = LatLng(location.latitude, location.longitude)
+                    //mMap.addMarker(MarkerOptions().position(here).title("Marker Here"))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(here, ZOOM_LEVEL))
                 }
+
+                stopUpdateLocation()
             }
         }
 
-        fusedLocationClient.requestLocationUpdates(locationRequest, callback, null)*/
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
 
     private fun pedirPermisos() {
@@ -144,8 +162,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    //private fun detenerActualizacionUbicacion() {
-    //    fusedLocationClient.removeLocationUpdates(callback)
-    //}
+    private fun stopUpdateLocation() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
 
 }

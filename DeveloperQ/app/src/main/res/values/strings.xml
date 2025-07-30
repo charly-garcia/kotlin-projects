@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UserForm</string>
+    <string name="user_profile">Perfil de Usuario</string>
+    <string name="name_label">Nombre</string>
+    <string name="email_label">Correo Electrónico</string>
+    <string name="hobbies_label">Pasatiempos</string>
+    <string name="save_button">Guardar</string>
+    <string name="name_hint">Ingresa tu nombre</string>
+    <string name="email_hint">ejemplo@correo.com</string>
+    <string name="hobbies_hint">Lectura, deportes, música...</string>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Define a simple bean -->
+	<!--bean id="baseCustomer" class="com.example.beans.Customer">
+		<property name="country" value="India"></property>
+	</bean>
+	
+	<!bean id="customer" parent="baseCustomer">
+		<property name="name" value="King Kochhar" />
+		<property name="email" value="king.kochhar@example.com" />
+	</bean-->
+	
+	<bean id="abstractMessageService" abstract="true" class="com.example.beans.MessageService">
+		<property name="sender" value="abc@example.com"></property>
+	</bean>
+	
+	<bean id="emailService" parent="abstractMessageService" class="com.example.beans.EmailService">
+		<property name="smtpServer" value="smtp.example.com"></property>
+	</bean>
+	<bean id="smsService" parent="abstractMessageService" class="com.example.beans.SMSService">
+		<property name="gateway" value="sms.gateway.com"></property>
+	</bean>
+
+</beans>
+

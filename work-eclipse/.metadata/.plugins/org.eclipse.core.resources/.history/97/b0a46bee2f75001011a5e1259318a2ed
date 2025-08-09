@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Define a simple bean -->
+	<bean id="baseCustomer" class="com.example.beans.Customer">
+		<property name="country" value="India"></property>
+	</bean>
+	
+	<bean id="customer" parent="baseCustomer">
+		<property name="name" value="King Kochhar" />
+		<property name="email" value="king.kochhar@example.com" />
+	</bean>
+
+</beans>
+
